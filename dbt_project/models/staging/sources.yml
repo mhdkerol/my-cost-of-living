@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: raw
+    database: my_cost_of_living
+    schema: raw
+    tables:
+      - name: fuelprice
+        description: "Weekly retail fuel prices in Malaysia (RM per litre) from OpenDOSM / data.gov.my. Holds both price levels and weekly changes, split by series_type. Loaded as-is."
+      - name: lookup_item
+        description: "PriceCatcher item lookup from OpenDOSM. One row per item with name, unit, item group and item category. Loaded as-is."
+      - name: lookup_premise
+        description: "PriceCatcher premise lookup from OpenDOSM. One row per premise with name, address, premise type, state and district. Current snapshot. Loaded as-is."
+      - name: pricecatcher_2026_10
+        description: "PriceCatcher price observations for October 2026 from OpenDOSM. One row per item, premise and date. Loaded as-is."
