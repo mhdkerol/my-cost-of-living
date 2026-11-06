@@ -1,0 +1,6 @@
+my_cost_of_living:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ../raw_data/my_cost_of_living.duckdb
