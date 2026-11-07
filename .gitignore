@@ -1,20 +1,12 @@
 .venv/
 __pycache__/
 *.pyc
+.ipynb_checkpoints/
 .env
-target/
-dbt_packages/
-logs/
-*.duckdb
-
-# my-cost-of-living
-.venv/
 raw_data/
 *.duckdb
 *.duckdb.wal
 target/
 dbt_packages/
 logs/
-__pycache__/
-.ipynb_checkpoints/
-.env
+.user.yml
