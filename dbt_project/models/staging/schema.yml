@@ -1,0 +1,78 @@
+version: 2
+
+models:
+  - name: stg_fuelprice
+    columns:
+      - name: series_type
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['level', 'change_weekly']
+      - name: effective_date
+        data_tests: [not_null]
+      - name: _loaded_at
+        data_tests: [not_null]
+      - name: _source_url
+        data_tests: [not_null]
+
+  - name: stg_lookup_premise
+    columns:
+      - name: premise_code
+        data_tests: [not_null, unique]
+      - name: address
+        data_tests: [not_null]
+      - name: state
+        data_tests:
+          - not_null:
+              config:
+                where: "premise_code != -1"   # -1 is the source's unknown premise
+      - name: _loaded_at
+        data_tests: [not_null]
+      - name: _source_url
+        data_tests: [not_null]
+
+  - name: stg_lookup_item
+    columns:
+      - name: item_code
+        data_tests: [not_null, unique]
+      - name: item_name
+        data_tests:
+          - not_null:
+              config:
+                where: "item_code != -1"      # -1 is the source's unknown item
+      - name: _loaded_at
+        data_tests: [not_null]
+      - name: _source_url
+        data_tests: [not_null]
+
+  - name: stg_pricecatcher
+    columns:
+      - name: price_date
+        data_tests: [not_null]
+      - name: price
+        data_tests: [not_null]
+      - name: item_code
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_lookup_item')
+                field: item_code
+              config:
+                where: "item_code != -1"
+                severity: warn   # 44 codes missing from the source lookup
+      - name: premise_code
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_lookup_premise')
+                field: premise_code
+              config:
+                where: "premise_code != -1"
+                severity: warn   # premise 20927, Feb 2024
+      - name: _loaded_at
+        data_tests: [not_null]
+      - name: _source_url
+        data_tests: [not_null]
