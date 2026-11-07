@@ -49,6 +49,8 @@ my-cost-of-living/
       stg_lookup_item.sql
       stg_lookup_premise.sql
       stg_pricecatcher.sql      union of all monthly price tables
+    tests/
+      assert_pricecatcher_grain_unique.sql   duplicate check on the price grain
     profiles.yml                local DuckDB profile
   raw_data/                     DuckDB file (not committed)
   requirements.txt
@@ -114,12 +116,13 @@ Staging models are covered by dbt tests (`dbt_project/models/staging/schema.yml`
 - **Unique** on `premise_code` and `item_code` in the lookups.
 - **Accepted values** on the fuel `series_type`.
 - **Relationships** from price rows to the item and premise lookups, excluding `-1`.
+- **Grain:** a singular test (`tests/assert_pricecatcher_grain_unique.sql`) reports duplicate date, premise and item combinations.
 
-The two relationship tests are set to warn, not fail. They report the known lookup gaps above, so that the gaps stay visible without blocking the build. A sudden increase in either count would be worth investigating.
+The two relationship tests and the grain test are set to warn, not fail. They report the known lookup gaps and duplicates described above, so that these stay visible without blocking the build. A sudden increase in any of the three counts would be worth investigating.
 
 ## Status
 
-- [x] Raw load into DuckDB for PriceCatcher (January 2022 to October 2026), lookups and fuel prices
+- [x] Raw load into DuckDB for PriceCatcher (January 2022 to November 2026, latest month partial), lookups and fuel prices
 - [x] Incremental load with lineage columns
 - [x] Staging models and sources
 - [x] dbt tests on staging
