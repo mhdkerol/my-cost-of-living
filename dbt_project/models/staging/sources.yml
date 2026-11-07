@@ -135,3 +135,5 @@ sources:
         description: "PriceCatcher price observations for September 2026 from OpenDOSM. One row per item, premise and date. Loaded as-is."
       - name: pricecatcher_2026_10
         description: "PriceCatcher price observations for October 2026 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2026_11
+        description: "PriceCatcher price observations for November 2026 from OpenDOSM. One row per item, premise and date. Loaded as-is."
