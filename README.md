@@ -17,7 +17,7 @@ All data comes from Malaysia's open data portals (OpenDOSM / data.gov.my).
 | PriceCatcher premise lookup | Premise name, address, type, state, district | premise | `raw.lookup_premise` |
 | Weekly fuel prices | RON95, RON97, diesel and subsidised variants (RM per litre) | week, series type | `raw.fuelprice` |
 
-Source files are Parquet, read directly over HTTPS from `storage.data.gov.my`. Price files currently cover January 2022 to October 2026, roughly 2 to 3 million rows per month.
+Source files are Parquet, read directly over HTTPS from `storage.data.gov.my`. Price files cover January 2022 to the current month, roughly 2 to 3 million rows per month, and the latest month is partial until it closes. The data-quality checks below were run on January 2022 to October 2026.
 
 ## Architecture
 
@@ -92,13 +92,15 @@ The load is incremental and safe to re-run.
 
 These were found while loading and testing the staging layer. Staging keeps all rows; the handling below applies in later layers.
 
-**Placeholder keys (`-1`).** Both lookup tables contain a `-1` row ("Unknown Premise" and an item with no attributes), with null state, district and category fields. Across all loaded months, PriceCatcher uses `-1` in 157 rows: 1 unknown item (June 2022) and 156 unknown premises (October 2022 to August 2023). These rows are valid prices without a known premise, so they stay in the data. In the dimension models, null attributes will be shown as `Unknown`, so unknown-premise prices group under an "Unknown" state instead of disappearing.
+**Placeholder keys (`-1`).** Both lookup tables contain a `-1` row ("Unknown Premise" and an item with no attributes), with null state, district and category fields. Across January 2022 to October 2026, PriceCatcher uses `-1` in 157 rows: 1 unknown item (June 2022) and 156 unknown premises (October 2022 to August 2023). These rows are valid prices without a known premise, so they stay in the data. In the dimension models, null attributes will be shown as `Unknown`, so unknown-premise prices group under an "Unknown" state instead of disappearing.
 
 **Item codes missing from the item lookup.** 44 item codes that appear in price data are absent from `lookup_item`, even though the lookup covers codes up to 2115 and lists items on both sides of the gaps. They account for about 1.4 million price rows (roughly 1% of all rows), all from late December 2023 onward. Some of these items are still being priced in the latest data. The gap is in the published lookup, not in this pipeline. Until names and categories are available, these rows are kept and labelled by code (`Unknown item <code>`), so they remain traceable. Any analysis by item or category from 2024 onward excludes the category detail for these rows.
 
 **Premise code missing from the premise lookup.** One code (20927) is missing, in 273 rows between 5 and 19 February 2024.
 
-**Missing days in PriceCatcher.** 44 of the 58 loaded months have at least one calendar day with no price rows: about 102 missing days out of roughly 1,765, or 6%. Most months miss one to three days. The largest gaps are October 2026 (the file starts on 10 October, so 1 to 9 October are missing), May 2023 and December 2023 (7 days each) and March 2026 (6 days). Some gaps fall in public holiday periods, but this has not been checked against a holiday calendar. The gaps are in the published files, so they are not filled in. Intended handling in the marts: average prices over the days observed, and keep the number of days observed next to each weekly or monthly figure so partial periods are visible.
+**Missing days in PriceCatcher.** 44 of the 58 months from January 2022 to October 2026 have at least one calendar day with no price rows: about 102 missing days out of roughly 1,765, or 6%. Most months miss one to three days. The largest gaps are October 2026 (the file starts on 10 October, so 1 to 9 October are missing), May 2023 and December 2023 (7 days each) and March 2026 (6 days). Some gaps fall in public holiday periods, but this has not been checked against a holiday calendar. The gaps are in the published files, so they are not filled in. Intended handling in the marts: average prices over the days observed, and keep the number of days observed next to each weekly or monthly figure so partial periods are visible.
+
+**Duplicate rows.** 20,613 combinations of date, premise and item appear twice in PriceCatcher (41,226 rows, about 0.03% of the data). In every case the two rows are exact repeats: the same price, from the same monthly file. Staging keeps them. The intermediate layer is planned to keep one row per combination.
 
 **Fuel price grain.** `fuelprice` holds two series per date, `level` and `change_weekly`, so every date appears twice. Models that need prices must filter to `level`. Subsidised price columns are null in earlier years, so comparisons use the market `diesel` and `ron95` columns.
 
