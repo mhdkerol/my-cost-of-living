@@ -98,6 +98,8 @@ These were found while loading and testing the staging layer. Staging keeps all 
 
 **Premise code missing from the premise lookup.** One code (20927) is missing, in 273 rows between 5 and 19 February 2024.
 
+**Missing days in PriceCatcher.** 44 of the 58 loaded months have at least one calendar day with no price rows: about 102 missing days out of roughly 1,765, or 6%. Most months miss one to three days. The largest gaps are October 2026 (the file starts on 10 October, so 1 to 9 October are missing), May 2023 and December 2023 (7 days each) and March 2026 (6 days). Some gaps fall in public holiday periods, but this has not been checked against a holiday calendar. The gaps are in the published files, so they are not filled in. Intended handling in the marts: average prices over the days observed, and keep the number of days observed next to each weekly or monthly figure so partial periods are visible.
+
 **Fuel price grain.** `fuelprice` holds two series per date, `level` and `change_weekly`, so every date appears twice. Models that need prices must filter to `level`. Subsidised price columns are null in earlier years, so comparisons use the market `diesel` and `ron95` columns.
 
 **Text fields.** Item names are uppercase Malay with some stray symbols. `unit` is free text such as `1kg`. State names are not spelled consistently between `state` and `district` (for example `W.P. Putrajaya` and `Wp Putrajaya`), so distinct values need checking before grouping by state.
