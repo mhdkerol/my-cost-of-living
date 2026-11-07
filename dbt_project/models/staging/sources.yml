@@ -1,3 +1,4 @@
+
 version: 2
 
 sources:
@@ -7,9 +8,130 @@ sources:
     tables:
       - name: fuelprice
         description: "Weekly retail fuel prices in Malaysia (RM per litre) from OpenDOSM / data.gov.my. Holds both price levels and weekly changes, split by series_type. Loaded as-is."
+
       - name: lookup_item
         description: "PriceCatcher item lookup from OpenDOSM. One row per item with name, unit, item group and item category. Loaded as-is."
+
       - name: lookup_premise
         description: "PriceCatcher premise lookup from OpenDOSM. One row per premise with name, address, premise type, state and district. Current snapshot. Loaded as-is."
+
+      - name: pricecatcher_2022_01
+        description: "PriceCatcher price observations for January 2022 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2022_02
+        description: "PriceCatcher price observations for February 2022 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2022_03
+        description: "PriceCatcher price observations for March 2022 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2022_04
+        description: "PriceCatcher price observations for April 2022 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2022_05
+        description: "PriceCatcher price observations for May 2022 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2022_06
+        description: "PriceCatcher price observations for June 2022 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2022_07
+        description: "PriceCatcher price observations for July 2022 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2022_08
+        description: "PriceCatcher price observations for August 2022 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2022_09
+        description: "PriceCatcher price observations for September 2022 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2022_10
+        description: "PriceCatcher price observations for October 2022 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2022_11
+        description: "PriceCatcher price observations for November 2022 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2022_12
+        description: "PriceCatcher price observations for December 2022 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+
+      - name: pricecatcher_2023_01
+        description: "PriceCatcher price observations for January 2023 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2023_02
+        description: "PriceCatcher price observations for February 2023 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2023_03
+        description: "PriceCatcher price observations for March 2023 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2023_04
+        description: "PriceCatcher price observations for April 2023 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2023_05
+        description: "PriceCatcher price observations for May 2023 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2023_06
+        description: "PriceCatcher price observations for June 2023 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2023_07
+        description: "PriceCatcher price observations for July 2023 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2023_08
+        description: "PriceCatcher price observations for August 2023 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2023_09
+        description: "PriceCatcher price observations for September 2023 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2023_10
+        description: "PriceCatcher price observations for October 2023 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2023_11
+        description: "PriceCatcher price observations for November 2023 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2023_12
+        description: "PriceCatcher price observations for December 2023 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+
+      - name: pricecatcher_2024_01
+        description: "PriceCatcher price observations for January 2024 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2024_02
+        description: "PriceCatcher price observations for February 2024 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2024_03
+        description: "PriceCatcher price observations for March 2024 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2024_04
+        description: "PriceCatcher price observations for April 2024 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2024_05
+        description: "PriceCatcher price observations for May 2024 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2024_06
+        description: "PriceCatcher price observations for June 2024 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2024_07
+        description: "PriceCatcher price observations for July 2024 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2024_08
+        description: "PriceCatcher price observations for August 2024 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2024_09
+        description: "PriceCatcher price observations for September 2024 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2024_10
+        description: "PriceCatcher price observations for October 2024 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2024_11
+        description: "PriceCatcher price observations for November 2024 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2024_12
+        description: "PriceCatcher price observations for December 2024 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+
+      - name: pricecatcher_2025_01
+        description: "PriceCatcher price observations for January 2025 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2025_02
+        description: "PriceCatcher price observations for February 2025 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2025_03
+        description: "PriceCatcher price observations for March 2025 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2025_04
+        description: "PriceCatcher price observations for April 2025 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2025_05
+        description: "PriceCatcher price observations for May 2025 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2025_06
+        description: "PriceCatcher price observations for June 2025 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2025_07
+        description: "PriceCatcher price observations for July 2025 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2025_08
+        description: "PriceCatcher price observations for August 2025 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2025_09
+        description: "PriceCatcher price observations for September 2025 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2025_10
+        description: "PriceCatcher price observations for October 2025 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2025_11
+        description: "PriceCatcher price observations for November 2025 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2025_12
+        description: "PriceCatcher price observations for December 2025 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+
+      - name: pricecatcher_2026_01
+        description: "PriceCatcher price observations for January 2026 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2026_02
+        description: "PriceCatcher price observations for February 2026 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2026_03
+        description: "PriceCatcher price observations for March 2026 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2026_04
+        description: "PriceCatcher price observations for April 2026 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2026_05
+        description: "PriceCatcher price observations for May 2026 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2026_06
+        description: "PriceCatcher price observations for June 2026 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2026_07
+        description: "PriceCatcher price observations for July 2026 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2026_08
+        description: "PriceCatcher price observations for August 2026 from OpenDOSM. One row per item, premise and date. Loaded as-is."
+      - name: pricecatcher_2026_09
+        description: "PriceCatcher price observations for September 2026 from OpenDOSM. One row per item, premise and date. Loaded as-is."
       - name: pricecatcher_2026_10
         description: "PriceCatcher price observations for October 2026 from OpenDOSM. One row per item, premise and date. Loaded as-is."
