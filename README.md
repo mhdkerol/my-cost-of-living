@@ -4,7 +4,7 @@ How do fuel price changes relate to staple grocery prices in Malaysia? This proj
 
 Findings will be framed as "moves with / does not move with, at lag X", not as cause and effect.
 
-> **Status:** ingestion and the staging layer are built and tested. Intermediate models, marts and the dashboard are in progress. See [Status](#status).
+> **Status:** ingestion and the staging layer are built and tested. The intermediate layer is in progress (fuel levels done); marts and the dashboard are still to come. See [Status](#status).
 
 ## Data sources
 
@@ -49,8 +49,13 @@ my-cost-of-living/
       stg_lookup_item.sql
       stg_lookup_premise.sql
       stg_pricecatcher.sql      union of all monthly price tables
+    models/intermediate/
+      schema.yml                tests on intermediate models
+      int_fuel_levels.sql       published fuel prices, one row per date
     tests/
-      assert_pricecatcher_grain_unique.sql   duplicate check on the price grain
+      assert_pricecatcher_grain_unique.sql        duplicate check on the price grain
+      assert_fuel_levels_prices_positive.sql      fuel prices above zero
+      assert_fuel_levels_match_change_weekly.sql  fuel levels reconcile to the source's weekly changes
     profiles.yml                local DuckDB profile
   raw_data/                     DuckDB file (not committed)
   requirements.txt
@@ -68,12 +73,12 @@ pip install -r requirements.txt
 
 **1. Load the raw data.** Run the load cell in `ingestion/ingestion_working.ipynb`. The month range is set at the top of that cell.
 
-**2. Build and test the staging layer.** Run dbt from inside `dbt_project` and always pass `--profiles-dir .` so dbt uses the project profile rather than a global one:
+**2. Build and test the dbt models.** Run dbt from inside `dbt_project` and always pass `--profiles-dir .` so dbt uses the project profile rather than a global one:
 
 ```powershell
 cd dbt_project
-dbt run --select staging --profiles-dir .
-dbt test --select staging --profiles-dir .
+dbt run --select staging intermediate --profiles-dir .
+dbt test --select staging intermediate --profiles-dir .
 ```
 
 DuckDB allows one read-write connection at a time. Close any open notebook connection before running dbt.
@@ -104,7 +109,7 @@ These were found while loading and testing the staging layer. Staging keeps all 
 
 **Duplicate rows.** 20,613 combinations of date, premise and item appear twice in PriceCatcher (41,226 rows, about 0.03% of the data). In every case the two rows are exact repeats: the same price, from the same monthly file. Staging keeps them. The intermediate layer is planned to keep one row per combination.
 
-**Fuel price grain.** `fuelprice` holds two series per date, `level` and `change_weekly`, so every date appears twice. Models that need prices must filter to `level`. Subsidised price columns are null in earlier years, so comparisons use the market `diesel` and `ron95` columns.
+**Fuel price grain.** `fuelprice` holds two series per date, `level` (the pump price) and `change_weekly` (the change in RM from the previous published date), so every date appears twice; the first date, 30 March 2017, has only a `level` row. `int_fuel_levels` keeps the `level` rows, one per date, and a test confirms that the level differences match `change_weekly` on every date. Subsidised price columns are null in earlier years and are left out; comparisons use the market `ron95`, `ron97` and `diesel` columns, plus `diesel_eastmsia`, which differs from Peninsular diesel from 10 June 2024. Publication dates are not strictly weekly: 2018 has monthly gaps, 2019 and 2020 fall on Saturdays, and since 2022 the gap between dates ranges from 3 to 9 days. About a third of published dates repeat the previous prices unchanged.
 
 **Text fields.** Item names are uppercase Malay with some stray symbols. `unit` is free text such as `1kg`. State names are not spelled consistently between `state` and `district` (for example `W.P. Putrajaya` and `Wp Putrajaya`), so distinct values need checking before grouping by state.
 
@@ -120,13 +125,18 @@ Staging models are covered by dbt tests (`dbt_project/models/staging/schema.yml`
 
 The two relationship tests and the grain test are set to warn, not fail. They report the known lookup gaps and duplicates described above, so that these stay visible without blocking the build. A sudden increase in any of the three counts would be worth investigating.
 
+Intermediate models are covered in `dbt_project/models/intermediate/schema.yml` and singular tests, all at error severity:
+
+- **`int_fuel_levels`:** unique and not null `effective_date`, not null on all prices and lineage columns, prices above zero, and a reconciliation test that each level minus the previous level equals the source's `change_weekly` row for RON95, RON97 and diesel.
+
 ## Status
 
 - [x] Raw load into DuckDB for PriceCatcher (January 2022 to November 2026, latest month partial), lookups and fuel prices
 - [x] Incremental load with lineage columns
 - [x] Staging models and sources
 - [x] dbt tests on staging
-- [ ] Intermediate models: fuel `level` series, daily fuel price in effect, deduplication, outlier rule, unit parsing
+- [x] Intermediate: fuel `level` series (`int_fuel_levels`)
+- [ ] Intermediate: daily fuel price in effect, deduplication, outlier rule, unit parsing
 - [ ] Marts and reconciliation tests, export to Parquet
 - [ ] Dashboard
 - [ ] Lineage graph and data model diagram in this README
