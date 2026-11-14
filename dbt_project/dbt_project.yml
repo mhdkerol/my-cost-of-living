@@ -18,3 +18,6 @@ models:
     # staging models are built as views
     staging:
       +materialized: view
+    # intermediate defaults to views; big models get table in their own config
+    intermediate:
+      +materialized: view
